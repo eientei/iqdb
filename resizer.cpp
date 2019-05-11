@@ -418,7 +418,7 @@ void AutoPNG::read_info() {
 }
 
 png_color_16 AutoPNG::white_background
-	= { index: 0, red: ~png_uint_16(), green: ~png_uint_16(), blue: ~png_uint_16(), gray: ~png_uint_16() };
+	= { index: 0, red: (png_uint_16)(~png_uint_16()), green: (png_uint_16)(~png_uint_16()), blue: (png_uint_16)(~png_uint_16()), gray: (png_uint_16)(~png_uint_16()) };
 
 void AutoPNG::setup_trans() {
 	png_set_palette_to_rgb(png);
@@ -481,7 +481,7 @@ void AutoPNG::scale(AutoGDImage& img, unsigned int scale_bits) {
 	size_t scale = 1 << scale_bits;
 	size_t mask = scale - 1;
 	for (size_t i = 0; i < height; i++) {
-		if (png->row_number != i) DEBUG(errors)("ERROR: We are in row %zd but PNG is in %ld!\n", i, png->row_number);
+		if (png_get_current_row_number(png) != i) DEBUG(errors)("ERROR: We are in row %zd but PNG is in %ld!\n", i, png_get_current_row_number(png));
 
 	//	png_byte* in = (png_byte*) &(img->tpixels[row_y + (row_xinc == 1 ? 0 : 1)][row_x]);
 		png_byte* in = row.ptr();
@@ -540,7 +540,7 @@ void AutoPNG::trunc(AutoGDImage& img, unsigned int scale_bits) {
 
 		//fprintf(stderr, "Starting pass %d, has %zd(%ld!) rows @%zd+%zd of %zd(%ld!) pixels @%zd+%zd.\n", pass, row_ynum, png->num_rows, row_y, row_yinc, row_xnum, png->iwidth, row_x, row_xinc);
 		for (size_t i = 0; i < row_ynum; i++) {
-			if (png->row_number != i) DEBUG(errors)("ERROR: We are in row %zd but PNG is in %ld!\n", i, png->row_number);
+			if (png_get_current_row_number(png) != i) DEBUG(errors)("ERROR: We are in row %zd but PNG is in %ld!\n", i, png_get_current_row_number(png));
 
 		//	png_byte* in = (png_byte*) &(img->tpixels[row_y + (row_xinc == 1 ? 0 : 1)][row_x]);
 			png_byte* in = row.ptr();

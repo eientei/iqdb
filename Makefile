@@ -6,8 +6,8 @@ CFLAGS=-I/usr/local/Cellar/libpng12/1.2.50/include -L/usr/local/Cellar/libpng12/
 EXTRADEFS=
 
 # Graphics library to use, can be GD or ImageMagick.
-IMG_LIB=GD
-#IMG_LIB=ImageMagick
+#IMG_LIB=GD
+IMG_LIB=ImageMagick
 
 # In simple mode, by default all data needed for queries is now
 # read into memory, using in total about 500 bytes per image. It
@@ -29,7 +29,7 @@ override DEFS+=-DUSE_DELTA_QUEUE
 
 # Disable use of std::tr1::unordered_map if your compiler/C++ library
 # is old and doesn't have it. This will make many things slower.
-# override DEFS+=-DNO_TR1
+override DEFS+=-DNO_TR1
 
 # This may help or hurt performance. Try it and see for yourself.
 override DEFS+=-fomit-frame-pointer

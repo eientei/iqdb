@@ -73,7 +73,27 @@ typedef int32_t Score;
 typedef int64_t DScore;
 
 #ifdef FORCE_64BIT
-typedef uint64_t imageId;
+struct imageId {
+	uint64_t value;
+        imageId() = default;
+        imageId(uint64_t v) {
+          this->value = v;
+        }
+        operator uint64_t() { return (uint64_t)this->value; };
+	bool operator <(const imageId &o) const {
+		return this->value < o.value;
+	}
+	bool operator !=(const imageId &o) const {
+		return this->value != o.value;
+	}
+	bool operator !=(const uint64_t &o) const {
+		return this->value != o;
+	}
+	bool operator ==(const imageId &o) const {
+		return this->value == o.value;
+	}
+};
+
 typedef uint64_t count_t;
 typedef uint64_t offset_t;
 typedef int64_t  res_t;

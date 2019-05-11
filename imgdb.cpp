@@ -444,9 +444,9 @@ void dbSpaceCommon::sigFromImage(Image* image, imageId id, ImgData* sig) {
 	const PixelPacket *pixel_cache = AcquireImagePixels(image, 0, 0, NUM_PIXELS, NUM_PIXELS, &exception);
 
 	for (int idx = 0; idx < NUM_PIXELS*NUM_PIXELS; idx++) {
-		rchan[idx] = pixel_cache->red >> (QuantumDepth - 8);
-		gchan[idx] = pixel_cache->green >> (QuantumDepth - 8);
-		bchan[idx] = pixel_cache->blue >> (QuantumDepth - 8);
+		rchan[idx] = ((int)pixel_cache->red) >> (QuantumDepth - 8);
+		gchan[idx] = ((int)pixel_cache->green) >> (QuantumDepth - 8);
+		bchan[idx] = ((int)pixel_cache->blue) >> (QuantumDepth - 8);
 		pixel_cache++;
 	}
 #elif LIB_GD
@@ -631,9 +631,11 @@ void dbSpaceAlter::addImageData(const ImgData* img) {
 inline void check_image(Image* image) {
 	if (!image)	// unable to read image
 		throw image_error("Unable to read image data.");
-
-	if (image->colorspace != RGBColorspace)
-		throw image_error("Invalid color space.");
+	if (image->colorspace != RGBColorspace) {
+		if (!TransformImageColorspace(image, RGBColorspace)) {
+			throw image_error("Invalid color space.");
+		}
+	}
 	if (image->storage_class != DirectClass) {
 		SyncImage(image);
 		SetImageType(image, TrueColorType);

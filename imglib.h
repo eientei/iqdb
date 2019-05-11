@@ -257,7 +257,6 @@ protected:
 	container m_base;
 };
 
-template<>
 template<bool is_simple>
 class imageIdIndex_list<is_simple, false> {
 public:
@@ -419,7 +418,6 @@ template<bool is_simple, typename B>
 struct id_index_iterator;
 
 // In normal mode, the imageIdIndex_map stores image IDs. Get the index from the dbSpace's linked SigStruct.
-template<>
 template<typename B>
 struct id_index_iterator<false,B> : public B {
 	typedef B base_type;
@@ -430,7 +428,6 @@ struct id_index_iterator<false,B> : public B {
 };
 
 // In read-only/simple mode, the imageIdIndex_map stores the index directly.
-template<>
 template<typename B>
 struct id_index_iterator<true,B> : public B {
 	typedef B base_type;
